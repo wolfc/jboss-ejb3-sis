@@ -29,17 +29,14 @@ import org.jboss.ejb3.sis.Interceptor;
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  * @version $Revision: $
  */
-public class RegisteringInterceptor implements Interceptor
-{
-   private String name;
-   
-   public RegisteringInterceptor(String name)
-   {
-      this.name = name;
-   }
-   
-   public Object invoke(InvocationContext context) throws Exception
-   {
-      return name + context.proceed();
-   }
+public class RegisteringInterceptor implements Interceptor {
+    private String name;
+
+    public RegisteringInterceptor(String name) {
+        this.name = name;
+    }
+
+    public Object invoke(InvocationContext context) throws Exception {
+        return name + context.proceed();
+    }
 }

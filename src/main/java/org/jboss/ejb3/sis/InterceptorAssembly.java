@@ -30,63 +30,50 @@ import javax.interceptor.InvocationContext;
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  * @version $Revision: $
  */
-public class InterceptorAssembly implements Interceptor
-{
-   private Interceptor[] interceptors;
-   
-   public InterceptorAssembly(Interceptor interceptors[])
-   {
-      assert interceptors != null : "interceptors = null";
-      this.interceptors = interceptors;
-   }
-   
-   public Object invoke(final InvocationContext context) throws Exception
-   {
-      InvocationContext current = new InvocationContext() {
-         private int currentInterceptor = 0;
-         
-         public Map<String, Object> getContextData()
-         {
-            return context.getContextData();
-         }
-         
-         public Method getMethod()
-         {
-            return context.getMethod();
-         }
-         
-         public Object[] getParameters()
-         {
-            return context.getParameters();
-         }
-         
-         public Object getTarget()
-         {
-            return context.getTarget();
-         }
-         
-         public Object proceed() throws Exception
-         {
-            if(currentInterceptor < interceptors.length)
-            {
-               try
-               {
-                  return interceptors[currentInterceptor++].invoke(this);
-               }
-               finally
-               {
-                  // so that interceptors like clustering can reinvoke down the chain
-                  currentInterceptor--;
-               }
+public class InterceptorAssembly implements Interceptor {
+    private Interceptor[] interceptors;
+
+    public InterceptorAssembly(Interceptor interceptors[]) {
+        assert interceptors != null : "interceptors = null";
+        this.interceptors = interceptors;
+    }
+
+    public Object invoke(final InvocationContext context) throws Exception {
+        InvocationContext current = new InvocationContext() {
+            private int currentInterceptor = 0;
+
+            public Map<String, Object> getContextData() {
+                return context.getContextData();
             }
-            return context.proceed();
-         }
-         
-         public void setParameters(Object[] params)
-         {
-            context.setParameters(params);
-         }
-      };
-      return current.proceed();
-   }
+
+            public Method getMethod() {
+                return context.getMethod();
+            }
+
+            public Object[] getParameters() {
+                return context.getParameters();
+            }
+
+            public Object getTarget() {
+                return context.getTarget();
+            }
+
+            public Object proceed() throws Exception {
+                if (currentInterceptor < interceptors.length) {
+                    try {
+                        return interceptors[currentInterceptor++].invoke(this);
+                    } finally {
+                        // so that interceptors like clustering can reinvoke down the chain
+                        currentInterceptor--;
+                    }
+                }
+                return context.proceed();
+            }
+
+            public void setParameters(Object[] params) {
+                context.setParameters(params);
+            }
+        };
+        return current.proceed();
+    }
 }

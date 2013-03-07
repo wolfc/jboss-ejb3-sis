@@ -25,16 +25,14 @@ import javax.interceptor.InvocationContext;
 
 /**
  * The most basic interceptor.
- * 
+ * <p/>
  * If you're expecting magic, look somewhere else.
- * 
+ *
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  * @version $Revision: $
  */
-public class NoopInterceptor implements Interceptor
-{
-   public Object invoke(InvocationContext context) throws Exception
-   {
-      return context.proceed();
-   }
+public class NoopInterceptor implements Interceptor {
+    public Object invoke(InvocationContext context) throws Exception {
+        return context.proceed();
+    }
 }

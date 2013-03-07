@@ -25,7 +25,6 @@ package org.jboss.ejb3.sis.test.parameters;
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  * @version $Revision: $
  */
-public interface Greeter
-{
-   String sayHi(String name);
+public interface Greeter {
+    String sayHi(String name);
 }

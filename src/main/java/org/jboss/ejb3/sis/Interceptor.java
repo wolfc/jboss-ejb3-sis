@@ -25,16 +25,15 @@ import javax.interceptor.InvocationContext;
 
 /**
  * An interface for an around-invoke class interceptor build for speed.
- * 
+ * <p/>
  * Instead of scanning @AroundInvoke to see which methods needs to
  * be invoked, implement this interface.
- * 
+ * <p/>
  * Note that the interceptor itself must be made thread safe.
- * 
+ *
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  * @version $Revision: $
  */
-public interface Interceptor
-{
-   Object invoke(InvocationContext context) throws Exception;
+public interface Interceptor {
+    Object invoke(InvocationContext context) throws Exception;
 }

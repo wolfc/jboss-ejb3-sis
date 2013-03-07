@@ -35,23 +35,20 @@ import org.junit.Test;
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  * @version $Revision: $
  */
-public class SimpleTestCase
-{
-   @Test
-   public void test1() throws Throwable
-   {
-      InvocationHandler handler = new InvocationHandler() {
-         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
-         {
-            return "nothing";
-         }
-      };
-      Interceptor interceptor = new NoopInterceptor();
-      handler = new InterceptorInvocationHandler(handler, interceptor);
-      Object proxy = null;
-      Method method = Object.class.getDeclaredMethod("toString");
-      Object args[] = null;
-      String result = (String) handler.invoke(proxy, method, args);
-      assertEquals("nothing", result);
-   }
+public class SimpleTestCase {
+    @Test
+    public void test1() throws Throwable {
+        InvocationHandler handler = new InvocationHandler() {
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                return "nothing";
+            }
+        };
+        Interceptor interceptor = new NoopInterceptor();
+        handler = new InterceptorInvocationHandler(handler, interceptor);
+        Object proxy = null;
+        Method method = Object.class.getDeclaredMethod("toString");
+        Object args[] = null;
+        String result = (String) handler.invoke(proxy, method, args);
+        assertEquals("nothing", result);
+    }
 }

@@ -38,66 +38,60 @@ import org.junit.Test;
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  * @version $Revision: $
  */
-public class InterceptorAssemblyTestCase
-{
-   @Test
-   public void test1() throws Throwable
-   {
-      InvocationHandler handler = new InvocationHandler() {
-         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
-         {
-            return "nothing";
-         }
-      };
-      Interceptor interceptors[] = { new NoopInterceptor() };
-      Interceptor interceptor = new InterceptorAssembly(interceptors);
-      handler = new InterceptorInvocationHandler(handler, interceptor);
-      Object proxy = null;
-      Method method = Object.class.getDeclaredMethod("toString");
-      Object args[] = null;
-      String result = (String) handler.invoke(proxy, method, args);
-      assertEquals("nothing", result);
-   }  
+public class InterceptorAssemblyTestCase {
+    @Test
+    public void test1() throws Throwable {
+        InvocationHandler handler = new InvocationHandler() {
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                return "nothing";
+            }
+        };
+        Interceptor interceptors[] = {new NoopInterceptor()};
+        Interceptor interceptor = new InterceptorAssembly(interceptors);
+        handler = new InterceptorInvocationHandler(handler, interceptor);
+        Object proxy = null;
+        Method method = Object.class.getDeclaredMethod("toString");
+        Object args[] = null;
+        String result = (String) handler.invoke(proxy, method, args);
+        assertEquals("nothing", result);
+    }
 
-   @Test
-   public void test2() throws Throwable
-   {
-      InvocationHandler handler = new InvocationHandler() {
-         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
-         {
-            return "nothing";
-         }
-      };
-      Interceptor interceptors[] = { new RegisteringInterceptor("A"), new RegisteringInterceptor("B") };
-      Interceptor interceptor = new InterceptorAssembly(interceptors);
-      handler = new InterceptorInvocationHandler(handler, interceptor);
-      Object proxy = null;
-      Method method = Object.class.getDeclaredMethod("toString");
-      Object args[] = null;
-      String result = (String) handler.invoke(proxy, method, args);
-      assertEquals("ABnothing", result);
-   }  
+    @Test
+    public void test2() throws Throwable {
+        InvocationHandler handler = new InvocationHandler() {
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                return "nothing";
+            }
+        };
+        Interceptor interceptors[] = {new RegisteringInterceptor("A"), new RegisteringInterceptor("B")};
+        Interceptor interceptor = new InterceptorAssembly(interceptors);
+        handler = new InterceptorInvocationHandler(handler, interceptor);
+        Object proxy = null;
+        Method method = Object.class.getDeclaredMethod("toString");
+        Object args[] = null;
+        String result = (String) handler.invoke(proxy, method, args);
+        assertEquals("ABnothing", result);
+    }
 
-   @Test
-   public void testBounce() throws Throwable
-   {
-      InvocationHandler handler = new InvocationHandler() {
-         int numInvokes = 0;
-         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
-         {
-            numInvokes++;
-            if(numInvokes < 2)
-               throw new Exception("Again!");
-            return "nothing" + numInvokes;
-         }
-      };
-      Interceptor interceptors[] = { new RegisteringInterceptor("A"), new BouncingInterceptor(), new RegisteringInterceptor("B") };
-      Interceptor interceptor = new InterceptorAssembly(interceptors);
-      handler = new InterceptorInvocationHandler(handler, interceptor);
-      Object proxy = null;
-      Method method = Object.class.getDeclaredMethod("toString");
-      Object args[] = null;
-      String result = (String) handler.invoke(proxy, method, args);
-      assertEquals("ABnothing2", result);
-   }  
+    @Test
+    public void testBounce() throws Throwable {
+        InvocationHandler handler = new InvocationHandler() {
+            int numInvokes = 0;
+
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                numInvokes++;
+                if (numInvokes < 2)
+                    throw new Exception("Again!");
+                return "nothing" + numInvokes;
+            }
+        };
+        Interceptor interceptors[] = {new RegisteringInterceptor("A"), new BouncingInterceptor(), new RegisteringInterceptor("B")};
+        Interceptor interceptor = new InterceptorAssembly(interceptors);
+        handler = new InterceptorInvocationHandler(handler, interceptor);
+        Object proxy = null;
+        Method method = Object.class.getDeclaredMethod("toString");
+        Object args[] = null;
+        String result = (String) handler.invoke(proxy, method, args);
+        assertEquals("ABnothing2", result);
+    }
 }

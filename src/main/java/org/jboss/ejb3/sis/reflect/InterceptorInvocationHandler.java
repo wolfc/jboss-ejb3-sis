@@ -34,79 +34,61 @@ import org.jboss.ejb3.sis.Interceptor;
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  * @version $Revision: $
  */
-public class InterceptorInvocationHandler implements InvocationHandler
-{
-   private InvocationHandler handler;
-   private Interceptor interceptor;
-   
-   public InterceptorInvocationHandler(InvocationHandler handler, Interceptor interceptor)
-   {
-      assert handler != null : "handler is null";
-      assert interceptor != null : "interceptor is null";
-      
-      this.handler = handler;
-      this.interceptor = interceptor;
-   }
-   
-   /* (non-Javadoc)
-    * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
-    */
-   public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable
-   {
-      final Map<String, Object> contextData = new HashMap<String, Object>();
-      InvocationContext context = new InvocationContext() {
-         private Object[] parameters = args;
-         
-         public Map<String, Object> getContextData()
-         {
-            return contextData;
-         }
+public class InterceptorInvocationHandler implements InvocationHandler {
+    private InvocationHandler handler;
+    private Interceptor interceptor;
 
-         public Method getMethod()
-         {
-            return method;
-         }
+    public InterceptorInvocationHandler(InvocationHandler handler, Interceptor interceptor) {
+        assert handler != null : "handler is null";
+        assert interceptor != null : "interceptor is null";
 
-         public Object[] getParameters()
-         {
-            return args;
-         }
+        this.handler = handler;
+        this.interceptor = interceptor;
+    }
 
-         public Object getTarget()
-         {
-            return proxy;
-         }
+    /* (non-Javadoc)
+     * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
+     */
+    public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+        final Map<String, Object> contextData = new HashMap<String, Object>();
+        InvocationContext context = new InvocationContext() {
+            private Object[] parameters = args;
 
-         public Object proceed() throws Exception
-         {
-            try
-            {
-               return handler.invoke(proxy, method, parameters);
+            public Map<String, Object> getContextData() {
+                return contextData;
             }
-            catch(Error e)
-            {
-               throw e;
-            }
-            catch(RuntimeException e)
-            {
-               throw e;
-            }
-            catch(Exception e)
-            {
-               throw e;
-            }
-            catch(Throwable t)
-            {
-               // should not happen
-               throw new RuntimeException(t);
-            }
-         }
 
-         public void setParameters(Object[] params)
-         {
-            this.parameters = params;
-         }
-      };
-      return interceptor.invoke(context);
-   }
+            public Method getMethod() {
+                return method;
+            }
+
+            public Object[] getParameters() {
+                return args;
+            }
+
+            public Object getTarget() {
+                return proxy;
+            }
+
+            public Object proceed() throws Exception {
+                try {
+                    return handler.invoke(proxy, method, parameters);
+                } catch (Error e) {
+                    throw e;
+                } catch (RuntimeException e) {
+                    throw e;
+                } catch (Exception e) {
+                    throw e;
+                } catch (Throwable t) {
+                    // should not happen
+                    throw new RuntimeException(t);
+                }
+            }
+
+            public void setParameters(Object[] params) {
+                this.parameters = params;
+            }
+        };
+        return interceptor.invoke(context);
+    }
 }

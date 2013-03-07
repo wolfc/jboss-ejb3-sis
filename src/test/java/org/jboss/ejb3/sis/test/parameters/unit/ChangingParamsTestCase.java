@@ -37,23 +37,20 @@ import org.junit.Test;
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  * @version $Revision: $
  */
-public class ChangingParamsTestCase
-{
-   @Test
-   public void test1() throws Throwable
-   {
-      InvocationHandler handler = new InvocationHandler() {
-         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
-         {
-            return "Hi " + args[0];
-         }
-      };
-      Interceptor interceptor = new ChangingParamsInterceptor();
-      handler = new InterceptorInvocationHandler(handler, interceptor);
-      ClassLoader loader = Thread.currentThread().getContextClassLoader();
-      Class<?> interfaces[] = { Greeter.class };
-      Greeter greeter = (Greeter) Proxy.newProxyInstance(loader, interfaces, handler);
-      String result = greeter.sayHi("Fizz");
-      assertEquals("Hi *Fizz*", result);
-   }
+public class ChangingParamsTestCase {
+    @Test
+    public void test1() throws Throwable {
+        InvocationHandler handler = new InvocationHandler() {
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                return "Hi " + args[0];
+            }
+        };
+        Interceptor interceptor = new ChangingParamsInterceptor();
+        handler = new InterceptorInvocationHandler(handler, interceptor);
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        Class<?> interfaces[] = {Greeter.class};
+        Greeter greeter = (Greeter) Proxy.newProxyInstance(loader, interfaces, handler);
+        String result = greeter.sayHi("Fizz");
+        assertEquals("Hi *Fizz*", result);
+    }
 }

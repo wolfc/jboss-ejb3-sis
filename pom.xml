@@ -1,61 +1,62 @@
 <!-- 
   vi:ts=2:sw=2:expandtab 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent>
-    <groupId>org.jboss</groupId>
-    <artifactId>jboss-parent</artifactId>
-    <version>5</version>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.jboss.ejb3.sis</groupId>
-  <artifactId>jboss-ejb3-sis</artifactId>
-  <version>1.0.0-alpha-2-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  <name>JBoss EJB 3.0 Simple Interceptor System</name>
-  <url>http://www.jboss.org</url>
-  <description>
-    The JBoss EJB 3 Simple Interceptor System is a lightweight interceptor
-    mechanism which only depends on the JDK and EJB 3 API.
-  </description>
-  
-  <!-- SCM -->
-  <scm>
-    <connection>scm:git:git://github.com/jbossejb3/jboss-ejb3-sis.git</connection>
-    <developerConnection>scm:git:git@github.com:jbossejb3/jboss-ejb3-sis.git</developerConnection>
-    <url>http://github.com/jbossejb3/jboss-ejb3-sis</url>
-  </scm>
-  
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.0</version>
-        <configuration>
-          <autoVersionSubmodules>true</autoVersionSubmodules>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>org.jboss</groupId>
+        <artifactId>jboss-parent</artifactId>
+        <version>5</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.jboss.ejb3.sis</groupId>
+    <artifactId>jboss-ejb3-sis</artifactId>
+    <version>1.0.0-alpha-2-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>JBoss EJB 3.0 Simple Interceptor System</name>
+    <url>http://www.jboss.org</url>
+    <description>
+        The JBoss EJB 3 Simple Interceptor System is a lightweight interceptor
+        mechanism which only depends on the JDK and EJB 3 API.
+    </description>
 
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.4</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.javaee</groupId>
-      <artifactId>jboss-ejb-api</artifactId>
-      <version>3.0.0.CR1</version>
-    </dependency>    
-    <dependency>
-      <groupId>org.jboss.logging</groupId>
-      <artifactId>jboss-logging-log4j</artifactId>
-      <version>2.0.5.GA</version>
-      <scope>test</scope>
-    </dependency>    
-  </dependencies>
+    <!-- SCM -->
+    <scm>
+        <connection>scm:git:git://github.com/jbossejb3/jboss-ejb3-sis.git</connection>
+        <developerConnection>scm:git:git@github.com:jbossejb3/jboss-ejb3-sis.git</developerConnection>
+        <url>http://github.com/jbossejb3/jboss-ejb3-sis</url>
+    </scm>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.0</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.javaee</groupId>
+            <artifactId>jboss-ejb-api</artifactId>
+            <version>3.0.0.CR1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging-log4j</artifactId>
+            <version>2.0.5.GA</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 </project>

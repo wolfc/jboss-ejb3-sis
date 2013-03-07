@@ -29,18 +29,16 @@ import org.jboss.ejb3.sis.Interceptor;
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  * @version $Revision: $
  */
-public class ChangingParamsInterceptor implements Interceptor
-{
-   public Object invoke(InvocationContext context) throws Exception
-   {
-      // just to get some coverage
-      assert context.getContextData() != null;
-      assert context.getMethod().getName().equals("sayHi");
-      assert context.getTarget() != null;
-      
-      Object params[] = context.getParameters();
-      Object newParams[] = { "*" + params[0].toString() + "*" };
-      context.setParameters(newParams);
-      return context.proceed();
-   }
+public class ChangingParamsInterceptor implements Interceptor {
+    public Object invoke(InvocationContext context) throws Exception {
+        // just to get some coverage
+        assert context.getContextData() != null;
+        assert context.getMethod().getName().equals("sayHi");
+        assert context.getTarget() != null;
+
+        Object params[] = context.getParameters();
+        Object newParams[] = {"*" + params[0].toString() + "*"};
+        context.setParameters(newParams);
+        return context.proceed();
+    }
 }

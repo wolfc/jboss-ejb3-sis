@@ -27,26 +27,20 @@ import org.jboss.ejb3.sis.Interceptor;
 
 /**
  * This is a bad example of an interceptor. The exception should have been a defined exception.
- * 
+ *
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  * @version $Revision: $
  */
-public class BouncingInterceptor implements Interceptor
-{
-   public Object invoke(InvocationContext context) throws Exception
-   {
-      Object r = null;
-      while(r == null)
-      {
-         try
-         {
-            r = context.proceed();
-         }
-         catch(Exception e)
-         {
-            // ignore, do a bounce
-         }
-      }
-      return r;
-   }
+public class BouncingInterceptor implements Interceptor {
+    public Object invoke(InvocationContext context) throws Exception {
+        Object r = null;
+        while (r == null) {
+            try {
+                r = context.proceed();
+            } catch (Exception e) {
+                // ignore, do a bounce
+            }
+        }
+        return r;
+    }
 }
