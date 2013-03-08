@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2009, Red Hat Middleware LLC, and individual contributors
+ * Copyright (c) 2013, Red Hat, Inc., and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -21,36 +21,32 @@
  */
 package org.jboss.ejb3.sis.reflect;
 
+import org.jboss.ejb3.sis.Interceptor;
+
+import javax.interceptor.InvocationContext;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.interceptor.InvocationContext;
-
-import org.jboss.ejb3.sis.Interceptor;
-
 /**
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
- * @version $Revision: $
  */
-public class InterceptorInvocationHandler implements InvocationHandler {
-    private InvocationHandler handler;
-    private Interceptor interceptor;
+public class InterceptedMethod {
+    private final Method method;
+    private final Interceptor interceptor;
 
-    public InterceptorInvocationHandler(InvocationHandler handler, Interceptor interceptor) {
-        assert handler != null : "handler is null";
-        assert interceptor != null : "interceptor is null";
-
-        this.handler = handler;
+    public InterceptedMethod(final Method method, final Interceptor interceptor) {
+        this.method = method;
         this.interceptor = interceptor;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
-     */
-    public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+    public Method getMethod() {
+        return method;
+    }
+
+    public Object invoke(final Object obj, final Object... args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         final Map<String, Object> contextData = new HashMap<String, Object>();
         InvocationContext context = new InvocationContext() {
             private Object[] parameters = args;
@@ -60,20 +56,24 @@ public class InterceptorInvocationHandler implements InvocationHandler {
                 return null;
             }
 
+            @Override
             public Map<String, Object> getContextData() {
                 return contextData;
             }
 
+            @Override
             public Method getMethod() {
                 return method;
             }
 
+            @Override
             public Object[] getParameters() {
-                return args;
+                return parameters;
             }
 
+            @Override
             public Object getTarget() {
-                return proxy;
+                return obj;
             }
 
             @Override
@@ -81,25 +81,24 @@ public class InterceptorInvocationHandler implements InvocationHandler {
                 return null;
             }
 
+            @Override
             public Object proceed() throws Exception {
-                try {
-                    return handler.invoke(proxy, method, parameters);
-                } catch (Error e) {
-                    throw e;
-                } catch (RuntimeException e) {
-                    throw e;
-                } catch (Exception e) {
-                    throw e;
-                } catch (Throwable t) {
-                    // should not happen
-                    throw new RuntimeException(t);
-                }
+                return method.invoke(obj, parameters);
             }
 
+            @Override
             public void setParameters(Object[] params) {
                 this.parameters = params;
             }
         };
-        return interceptor.invoke(context);
+        try {
+            return interceptor.invoke(context);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (InvocationTargetException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

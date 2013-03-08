@@ -21,6 +21,7 @@
  */
 package org.jboss.ejb3.sis;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -42,6 +43,11 @@ public class InterceptorAssembly implements Interceptor {
         InvocationContext current = new InvocationContext() {
             private int currentInterceptor = 0;
 
+            @Override
+            public Constructor getConstructor() {
+                return context.getConstructor();
+            }
+
             public Map<String, Object> getContextData() {
                 return context.getContextData();
             }
@@ -56,6 +62,11 @@ public class InterceptorAssembly implements Interceptor {
 
             public Object getTarget() {
                 return context.getTarget();
+            }
+
+            @Override
+            public Object getTimer() {
+                return context.getTimer();
             }
 
             public Object proceed() throws Exception {

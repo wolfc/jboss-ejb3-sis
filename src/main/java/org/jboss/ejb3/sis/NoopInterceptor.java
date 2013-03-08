@@ -32,6 +32,8 @@ import javax.interceptor.InvocationContext;
  * @version $Revision: $
  */
 public class NoopInterceptor implements Interceptor {
+    public final static NoopInterceptor INSTANCE = new NoopInterceptor();
+
     public Object invoke(InvocationContext context) throws Exception {
         return context.proceed();
     }
