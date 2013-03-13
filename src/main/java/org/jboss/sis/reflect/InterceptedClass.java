@@ -19,10 +19,10 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.ejb3.sis.reflect;
+package org.jboss.sis.reflect;
 
-import org.jboss.ejb3.sis.Interceptor;
-import org.jboss.ejb3.sis.NoopInterceptor;
+import org.jboss.sis.Interceptor;
+import org.jboss.sis.NoopInterceptor;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;

@@ -19,22 +19,21 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.ejb3.sis;
+package org.jboss.sis;
 
 import javax.interceptor.InvocationContext;
 
 /**
- * The most basic interceptor.
+ * An interface for an around-invoke class interceptor build for speed.
  * <p/>
- * If you're expecting magic, look somewhere else.
+ * Instead of scanning @AroundInvoke to see which methods needs to
+ * be invoked, implement this interface.
+ * <p/>
+ * Note that the interceptor itself must be made thread safe.
  *
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  * @version $Revision: $
  */
-public class NoopInterceptor implements Interceptor {
-    public final static NoopInterceptor INSTANCE = new NoopInterceptor();
-
-    public Object invoke(InvocationContext context) throws Exception {
-        return context.proceed();
-    }
+public interface Interceptor {
+    Object invoke(InvocationContext context) throws Exception;
 }

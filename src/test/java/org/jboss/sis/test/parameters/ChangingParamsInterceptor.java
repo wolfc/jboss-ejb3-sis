@@ -19,36 +19,26 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.ejb3.sis.test.simple.unit;
+package org.jboss.sis.test.parameters;
 
-import static org.junit.Assert.assertEquals;
+import javax.interceptor.InvocationContext;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-
-import org.jboss.ejb3.sis.Interceptor;
-import org.jboss.ejb3.sis.NoopInterceptor;
-import org.jboss.ejb3.sis.reflect.InterceptorInvocationHandler;
-import org.junit.Test;
+import org.jboss.sis.Interceptor;
 
 /**
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  * @version $Revision: $
  */
-public class SimpleTestCase {
-    @Test
-    public void test1() throws Throwable {
-        InvocationHandler handler = new InvocationHandler() {
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                return "nothing";
-            }
-        };
-        Interceptor interceptor = new NoopInterceptor();
-        handler = new InterceptorInvocationHandler(handler, interceptor);
-        Object proxy = null;
-        Method method = Object.class.getDeclaredMethod("toString");
-        Object args[] = null;
-        String result = (String) handler.invoke(proxy, method, args);
-        assertEquals("nothing", result);
+public class ChangingParamsInterceptor implements Interceptor {
+    public Object invoke(InvocationContext context) throws Exception {
+        // just to get some coverage
+        assert context.getContextData() != null;
+        assert context.getMethod().getName().equals("sayHi");
+        assert context.getTarget() != null;
+
+        Object params[] = context.getParameters();
+        Object newParams[] = {"*" + params[0].toString() + "*"};
+        context.setParameters(newParams);
+        return context.proceed();
     }
 }

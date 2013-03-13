@@ -19,12 +19,12 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.ejb3.sis.test.construction;
+package org.jboss.sis.test.construction;
 
-import org.jboss.ejb3.sis.Interceptor;
-import org.jboss.ejb3.sis.reflect.InterceptedClass;
-import org.jboss.ejb3.sis.reflect.InterceptedConstructor;
-import org.jboss.ejb3.sis.reflect.InterceptedMethod;
+import org.jboss.sis.Interceptor;
+import org.jboss.sis.reflect.InterceptedClass;
+import org.jboss.sis.reflect.InterceptedConstructor;
+import org.jboss.sis.reflect.InterceptedMethod;
 import org.junit.Test;
 
 import javax.interceptor.InvocationContext;

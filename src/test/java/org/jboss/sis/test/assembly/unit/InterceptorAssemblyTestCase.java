@@ -19,19 +19,19 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.ejb3.sis.test.assembly.unit;
+package org.jboss.sis.test.assembly.unit;
 
 import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import org.jboss.ejb3.sis.Interceptor;
-import org.jboss.ejb3.sis.InterceptorAssembly;
-import org.jboss.ejb3.sis.NoopInterceptor;
-import org.jboss.ejb3.sis.reflect.InterceptorInvocationHandler;
-import org.jboss.ejb3.sis.test.assembly.BouncingInterceptor;
-import org.jboss.ejb3.sis.test.common.RegisteringInterceptor;
+import org.jboss.sis.Interceptor;
+import org.jboss.sis.InterceptorAssembly;
+import org.jboss.sis.NoopInterceptor;
+import org.jboss.sis.reflect.InterceptorInvocationHandler;
+import org.jboss.sis.test.assembly.BouncingInterceptor;
+import org.jboss.sis.test.common.RegisteringInterceptor;
 import org.junit.Test;
 
 /**

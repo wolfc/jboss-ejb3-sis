@@ -19,9 +19,9 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.ejb3.sis.reflect;
+package org.jboss.sis.reflect;
 
-import org.jboss.ejb3.sis.Interceptor;
+import org.jboss.sis.Interceptor;
 
 import javax.interceptor.InvocationContext;
 import java.lang.reflect.Constructor;
@@ -33,27 +33,28 @@ import java.util.Map;
 /**
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  */
-public class InterceptedMethod {
-    private final Method method;
+public class InterceptedConstructor<T> {
+    private final Constructor<T> constructor;
     private final Interceptor interceptor;
 
-    public InterceptedMethod(final Method method, final Interceptor interceptor) {
-        this.method = method;
+    public InterceptedConstructor(final Constructor<T> constructor, final Interceptor interceptor) {
+        this.constructor = constructor;
         this.interceptor = interceptor;
     }
 
-    public Method getMethod() {
-        return method;
+    public Constructor<T> getConstructor() {
+        return constructor;
     }
 
-    public Object invoke(final Object obj, final Object... args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public T newInstance(final Object... initargs) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         final Map<String, Object> contextData = new HashMap<String, Object>();
         InvocationContext context = new InvocationContext() {
-            private Object[] parameters = args;
+            private T target;
+            private Object[] parameters = initargs;
 
             @Override
             public Constructor getConstructor() {
-                return null;
+                return constructor;
             }
 
             @Override
@@ -63,7 +64,7 @@ public class InterceptedMethod {
 
             @Override
             public Method getMethod() {
-                return method;
+                return null;
             }
 
             @Override
@@ -73,7 +74,7 @@ public class InterceptedMethod {
 
             @Override
             public Object getTarget() {
-                return obj;
+                return target;
             }
 
             @Override
@@ -83,7 +84,8 @@ public class InterceptedMethod {
 
             @Override
             public Object proceed() throws Exception {
-                return method.invoke(obj, parameters);
+                target = constructor.newInstance(parameters);
+                return target;
             }
 
             @Override
@@ -92,7 +94,9 @@ public class InterceptedMethod {
             }
         };
         try {
-            return interceptor.invoke(context);
+            return (T) interceptor.invoke(context);
+        } catch (InstantiationException e) {
+            throw e;
         } catch (RuntimeException e) {
             throw e;
         } catch (InvocationTargetException e) {

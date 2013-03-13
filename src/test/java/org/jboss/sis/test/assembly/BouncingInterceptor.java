@@ -19,26 +19,28 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.ejb3.sis.test.parameters;
+package org.jboss.sis.test.assembly;
 
 import javax.interceptor.InvocationContext;
 
-import org.jboss.ejb3.sis.Interceptor;
+import org.jboss.sis.Interceptor;
 
 /**
+ * This is a bad example of an interceptor. The exception should have been a defined exception.
+ *
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  * @version $Revision: $
  */
-public class ChangingParamsInterceptor implements Interceptor {
+public class BouncingInterceptor implements Interceptor {
     public Object invoke(InvocationContext context) throws Exception {
-        // just to get some coverage
-        assert context.getContextData() != null;
-        assert context.getMethod().getName().equals("sayHi");
-        assert context.getTarget() != null;
-
-        Object params[] = context.getParameters();
-        Object newParams[] = {"*" + params[0].toString() + "*"};
-        context.setParameters(newParams);
-        return context.proceed();
+        Object r = null;
+        while (r == null) {
+            try {
+                r = context.proceed();
+            } catch (Exception e) {
+                // ignore, do a bounce
+            }
+        }
+        return r;
     }
 }

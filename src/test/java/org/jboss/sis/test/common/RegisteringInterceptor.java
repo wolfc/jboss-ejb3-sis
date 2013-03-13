@@ -19,11 +19,11 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.ejb3.sis.test.common;
+package org.jboss.sis.test.common;
 
 import javax.interceptor.InvocationContext;
 
-import org.jboss.ejb3.sis.Interceptor;
+import org.jboss.sis.Interceptor;
 
 /**
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>

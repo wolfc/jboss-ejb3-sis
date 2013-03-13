@@ -19,7 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.ejb3.sis.test.parameters.unit;
+package org.jboss.sis.test.parameters.unit;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,10 +27,10 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.jboss.ejb3.sis.Interceptor;
-import org.jboss.ejb3.sis.reflect.InterceptorInvocationHandler;
-import org.jboss.ejb3.sis.test.parameters.ChangingParamsInterceptor;
-import org.jboss.ejb3.sis.test.parameters.Greeter;
+import org.jboss.sis.Interceptor;
+import org.jboss.sis.reflect.InterceptorInvocationHandler;
+import org.jboss.sis.test.parameters.ChangingParamsInterceptor;
+import org.jboss.sis.test.parameters.Greeter;
 import org.junit.Test;
 
 /**

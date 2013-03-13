@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright (c) 2013, Red Hat, Inc., and individual contributors
+ * Copyright 2009, Red Hat Middleware LLC, and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -19,62 +19,61 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.ejb3.sis.reflect;
+package org.jboss.sis.reflect;
 
-import org.jboss.ejb3.sis.Interceptor;
-
-import javax.interceptor.InvocationContext;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.interceptor.InvocationContext;
+
+import org.jboss.sis.Interceptor;
+
 /**
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
+ * @version $Revision: $
  */
-public class InterceptedConstructor<T> {
-    private final Constructor<T> constructor;
-    private final Interceptor interceptor;
+public class InterceptorInvocationHandler implements InvocationHandler {
+    private InvocationHandler handler;
+    private Interceptor interceptor;
 
-    public InterceptedConstructor(final Constructor<T> constructor, final Interceptor interceptor) {
-        this.constructor = constructor;
+    public InterceptorInvocationHandler(InvocationHandler handler, Interceptor interceptor) {
+        assert handler != null : "handler is null";
+        assert interceptor != null : "interceptor is null";
+
+        this.handler = handler;
         this.interceptor = interceptor;
     }
 
-    public Constructor<T> getConstructor() {
-        return constructor;
-    }
-
-    public T newInstance(final Object... initargs) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    /* (non-Javadoc)
+     * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
+     */
+    public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         final Map<String, Object> contextData = new HashMap<String, Object>();
         InvocationContext context = new InvocationContext() {
-            private T target;
-            private Object[] parameters = initargs;
+            private Object[] parameters = args;
 
             @Override
             public Constructor getConstructor() {
-                return constructor;
+                return null;
             }
 
-            @Override
             public Map<String, Object> getContextData() {
                 return contextData;
             }
 
-            @Override
             public Method getMethod() {
-                return null;
+                return method;
             }
 
-            @Override
             public Object[] getParameters() {
-                return parameters;
+                return args;
             }
 
-            @Override
             public Object getTarget() {
-                return target;
+                return proxy;
             }
 
             @Override
@@ -82,27 +81,25 @@ public class InterceptedConstructor<T> {
                 return null;
             }
 
-            @Override
             public Object proceed() throws Exception {
-                target = constructor.newInstance(parameters);
-                return target;
+                try {
+                    return handler.invoke(proxy, method, parameters);
+                } catch (Error e) {
+                    throw e;
+                } catch (RuntimeException e) {
+                    throw e;
+                } catch (Exception e) {
+                    throw e;
+                } catch (Throwable t) {
+                    // should not happen
+                    throw new RuntimeException(t);
+                }
             }
 
-            @Override
             public void setParameters(Object[] params) {
                 this.parameters = params;
             }
         };
-        try {
-            return (T) interceptor.invoke(context);
-        } catch (InstantiationException e) {
-            throw e;
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (InvocationTargetException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return interceptor.invoke(context);
     }
 }

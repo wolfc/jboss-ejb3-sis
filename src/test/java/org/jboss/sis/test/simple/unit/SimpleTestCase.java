@@ -19,28 +19,36 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.ejb3.sis.test.assembly;
+package org.jboss.sis.test.simple.unit;
 
-import javax.interceptor.InvocationContext;
+import static org.junit.Assert.assertEquals;
 
-import org.jboss.ejb3.sis.Interceptor;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
+import org.jboss.sis.Interceptor;
+import org.jboss.sis.NoopInterceptor;
+import org.jboss.sis.reflect.InterceptorInvocationHandler;
+import org.junit.Test;
 
 /**
- * This is a bad example of an interceptor. The exception should have been a defined exception.
- *
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  * @version $Revision: $
  */
-public class BouncingInterceptor implements Interceptor {
-    public Object invoke(InvocationContext context) throws Exception {
-        Object r = null;
-        while (r == null) {
-            try {
-                r = context.proceed();
-            } catch (Exception e) {
-                // ignore, do a bounce
+public class SimpleTestCase {
+    @Test
+    public void test1() throws Throwable {
+        InvocationHandler handler = new InvocationHandler() {
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                return "nothing";
             }
-        }
-        return r;
+        };
+        Interceptor interceptor = new NoopInterceptor();
+        handler = new InterceptorInvocationHandler(handler, interceptor);
+        Object proxy = null;
+        Method method = Object.class.getDeclaredMethod("toString");
+        Object args[] = null;
+        String result = (String) handler.invoke(proxy, method, args);
+        assertEquals("nothing", result);
     }
 }
